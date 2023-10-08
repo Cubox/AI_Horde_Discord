@@ -11,7 +11,7 @@ const {buffer2webpbuffer} = require("webp-converter")
 const config = JSON.parse(readFileSync("./config.json").toString()) as Config
 
 const command_data = new SlashCommandBuilder()
-    .setName("generate")
+    .setName("basic_generate")
     .setDMPermission(false)
     .setDescription(`Generates an image with ai horde`)
     if(config.generate?.enabled) {
@@ -110,7 +110,7 @@ function generateButtons(id: string) {
 export default class extends Command {
     constructor() {
         super({
-            name: "generate",
+            name: "basic_generate",
             command_data: command_data.toJSON(),
             staff_only: false,
         })
@@ -223,7 +223,7 @@ export default class extends Command {
                 loras: style.loras,
                 steps: style.steps,
                 tis: style.tis,
-                hires_fix: style.hires_fix
+                hires_fix: style.hires_fix,
             },
             replacement_filter: ctx.client.config.generate.replacement_filter,
             nsfw: ctx.client.config.generate?.user_restrictions?.allow_nsfw,
@@ -290,11 +290,11 @@ ${!start_status?.is_possible ? "\nRequest can not be fulfulled with current amou
 ETA: <t:${Math.floor(Date.now()/1000)+(start_status?.wait_time ?? 0)}:R>`
         })
 
-        const login_embed = new EmbedBuilder({
+        /*const login_embed = new EmbedBuilder({
             color: Colors.Red,
             title: "You are not logged in",
             description: `This will make your requests appear anonymous.\nThis can result in low generation speed due to low priority.\nLog in now with ${await ctx.client.getSlashCommandTag("login")}\n\nDon't know what the token is?\nCreate an ai horde account here: https://aihorde.net/register`
-        })
+        })*/
 
         if(ctx.client.config.advanced?.dev) embed.setFooter({text: generation_start.id})
 
@@ -313,7 +313,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(start_status?.wait_time ?? 0)}:R>`
 
         ctx.interaction.editReply({
             content: "",
-            embeds: token === (ctx.client.config.default_token ?? "0000000000") ? [embed.toJSON(), login_embed.toJSON()] : [embed.toJSON()],
+            embeds: token === (ctx.client.config.default_token ?? "0000000000") ? [embed.toJSON()] : [embed.toJSON()],
             components
         })
 
@@ -372,7 +372,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
 
             if(ctx.client.config.advanced?.dev) embed.setFooter({text: generation_start?.id ?? "Unknown ID"})
 
-            let embeds = token === (ctx.client.config.default_token ?? "0000000000") ? [embed.toJSON(), login_embed.toJSON()] : [embed.toJSON()]
+            let embeds = token === (ctx.client.config.default_token ?? "0000000000") ? [embed.toJSON()] : [embed.toJSON()]
 
             if((status?.wait_time ?? 0) > 60 * 2) {
                 embeds.push(new EmbedBuilder({
