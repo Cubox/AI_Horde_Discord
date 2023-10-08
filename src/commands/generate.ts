@@ -374,13 +374,13 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
 
             let embeds = token === (ctx.client.config.default_token ?? "0000000000") ? [embed.toJSON()] : [embed.toJSON()]
 
-            if((status?.wait_time ?? 0) > 60 * 2) {
+/*             if((status?.wait_time ?? 0) > 60 * 2) {
                 embeds.push(new EmbedBuilder({
                     color: Colors.Yellow,
                     title: "AI Horde currently is under high load",
                     description: "You can contribute your GPUs processing power to the project.\nRead more: https://aihorde.net/"
                 }).toJSON())
-            }
+            } */
 
             return message.edit({
                 content: "",
